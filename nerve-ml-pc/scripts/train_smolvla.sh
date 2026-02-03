@@ -24,13 +24,12 @@ hf auth login --token ${HF_TOKEN}
 wandb login ${WANDB_TOKEN}
 
 # --------------------------------------
-# Training
+# Training: SMOLVLA
 # --------------------------------------
 # IMPORTANT: validators is weird with the filepathing and causes errors with repo_id
 #   this only shows up if pushing to hub is set to true, so set to false and manually
 #   push after.
-
-lerobot-train --policy.path=lerobot/smolvla_base --dataset.repo_id=${HF_USER}/eval_v2_so101_lego-to-mug_50ep --batch_size=4 --steps=1 --output_dir=./outputs/test-DELETETHIS --job_name=v2_ft_smolvla_so101_lego-to-mug_50ep --policy.device=cuda --wandb.enable=false --policy.push_to_hub=false
+lerobot-train --policy.path=lerobot/smolvla_base --dataset.repo_id=${HF_USER}/eval_v2_so101_lego-to-mug_50ep --batch_size=4 --steps=20000 --output_dir=./outputs/test-DELETETHIS --job_name=v2_ft_smolvla_so101_lego-to-mug_50ep --policy.device=cuda --wandb.enable=false --policy.push_to_hub=false
 
 # --------------------------------------
 # Upload checkpoints
