@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+  lerobot-train:
+    # --------------------------------------------------------
+    # Image configuration
+    # --------------------------------------------------------
+    # Either:
+    #   image: your_dockerhub_user/lerobot-train:latest
+    # OR (for local testing):
+    #   build: .
+    # --------------------------------------------------------
+    build: .
+    image: lerobot-train:latest
+
+    # --------------------------------------------------------
+    # GPU access
+    # --------------------------------------------------------
+    # Requires:
+    # - nvidia-container-toolkit installed on host
+    # --------------------------------------------------------
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+    # --------------------------------------------------------
+    # Environment variables
+    # --------------------------------------------------------
+    # These are injected at runtime
+    # --------------------------------------------------------
+    env_file:
+      - .env
+
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+
+    # --------------------------------------------------------
+    # Volumes
+    # --------------------------------------------------------
+    # Persist outputs and caches outside container lifecycle
+    # --------------------------------------------------------
+    volumes:
+      - ./outputs:/workspace/outputs
+      - ./hf_cache:/root/.cache/huggingface
+      - ./wandb:/workspace/wandb
+
+    # --------------------------------------------------------
+    # USB / serial access (teleop, dataset creation)
+    # --------------------------------------------------------
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+
+    # --------------------------------------------------------
+    # Container behavior
+    # --------------------------------------------------------
+    tty: true
+    stdin_open: true
