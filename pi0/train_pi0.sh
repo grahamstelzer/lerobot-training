@@ -13,6 +13,11 @@ set +a
 source /opt/conda/etc/profile.d/conda.sh
 conda activate lerobot
 
+if ! conda info --envs | grep -q "lerobot"; then
+    echo "Error: lerobot conda environment not found"
+    exit 1
+fi
+
 # --------------------------------------
 # Hugging Face authentication
 # --------------------------------------
@@ -35,7 +40,7 @@ git clone https://huggingface.co/datasets/grahamwichhh/eval_v2_so101_lego-to-mug
 #   this only shows up if pushing to hub is set to true, so set to false and manually
 #   push after.
 
-lerobot-train  --dataset.repo_id=${HF_USER}/eval_v2_so101_lego-to-mug_50ep    --policy.type=pi0     --output_dir=./outputs/pi0_training     --job_name=pi0_training     --policy.pretrained_path=lerobot/pi0_base     --policy.repo_id=${HF_USER}/v2_pi0_so101_lego-to-mug_50ep     --policy.compile_model=true     --policy.gradient_checkpointing=true     --policy.dtype=bfloat16     --policy.freeze_vision_encoder=false     --policy.train_expert_only=false     --steps=3000     --policy.device=cuda     --batch_size=8     --wandb.enable=false
+lerobot-train --dataset.repo_id=${HF_USER}/eval_v2_so101_lego-to-mug_50ep --policy.type=pi0 --output_dir=./outputs/pi0_training --job_name=pi0_training --policy.pretrained_path=lerobot/pi0_base --policy.repo_id=${HF_USER}/v2_pi0_so101_lego-to-mug_50ep --policy.compile_model=true --policy.gradient_checkpointing=true --policy.dtype=bfloat16 --policy.freeze_vision_encoder=false --policy.train_expert_only=false --steps=3000 --policy.device=cuda --batch_size=8 --wandb.enable=false
 
 
 # --------------------------------------
