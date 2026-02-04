@@ -103,11 +103,9 @@ RUN source /opt/conda/etc/profile.d/conda.sh && \
 # ------------------------------------------------------------
 # Copy training entrypoint script
 # ------------------------------------------------------------
-COPY scripts/train_smolvla.sh /workspace/lerobot/train_smolvla.sh
-COPY scripts/train_pi0.sh /workspace/lerobot/train_pi0.sh
+COPY train_smolvla.sh /workspace/lerobot/train_smolvla.sh
 
 RUN chmod +x /workspace/lerobot/train_smolvla.sh
-RUN chmod +x /workspace/lerobot/train_pi0.sh
 
 
 
